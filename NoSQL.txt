@@ -1,0 +1,832 @@
+
+Database  ==>
+A database is a structured collection of data that is organized in a way that 
+ allows for efficient storage, retrieval, and management of information.
+
+
+Types of Database
+
+Relational Database  (MySQL, Oracle)
+NoSQL       (MongoDB,Cassandra, Redis)
+Graph Database  (Neoe4j, Amazon Neptune)
+
+
+NoSQL (Not Only SQL)
+
+NoSQL database are databases that stores data in a format other than the relational
+ tables.
+
+
+
+Features:  three Vs : variety,volume, velocity
+1 felxible schemas
+2 Horizontal scaling
+3 fast queries
+4. easy for developers
+
+Types:
+									bson
+1 Document Database  similar to JSON[JavaScript Object Notation] (e.g., MongoDB, CouchDB)
+2 Key-Value Database  (e.g., Redis, Amazon DynamoDB)
+3 Wide column stores  (e.g., Apache Cassandra, HBase)
+4 graph databases    (e.g., Neo4j, Amazon Neptune)
+
+
+
+RDBMS vs NoSQL
+
+Ex : Users and their multiple hobbies
+
+===============================================================================================================
+
+Document Database
+
+Data will be stored in seperate documents and each document is independent of others.
+eg : MongoDB
+db.students.insertMany([
+{
+  "empid":100,
+  "name":"King"
+  "Address":{
+		"city":"Pune",
+		"pincode": 411038
+	     },
+  "mail":"King@gmail.com",
+  "Subjects":["C","Core Java","Python"]
+},
+{
+ "empid":101,
+  "name":"Sachin"
+  "Address":{
+		"city":"Pune",
+		"pincode": 411038
+	     },
+  "mail":"Sachin@gmail.com",
+  "Subjects":["C","Core Java","SQL","RWD"],
+  "JobID": "Developer"
+}
+])
+=================================================================================
+MongoDB
+
+History:
+
+development of MongoDB began in 2007
+developed by NewYork based Organization named 10gen which is now know as MongoDB 
+first ready production  of MongoDB has been considered from version 1.4 in march2010.
+
+what is MongoDB?
+
+MongoDb is an open-source ,cross-platform, document-oriented database written in C++.
+
+Q. What is the type of MongoDB database ?
+It is Document Database /NoSql database.
+MongoDB is database from MongoDB vendor
+MongoDB is also based on Java Script.
+MongoDB internally used Mozilla's Spider Monkey Java Script Engine.
+
+how data represented in MOngoDb?
+ in JSON format
+
+JSON - JAva Script Object Notation
+
+MongoDb works on concept of collection and document
+
+ database- physical container for collections. A single mongodb server has multiple databases.
+ Collection- group of MongoDB documents.
+ Documents- is a set of key-value pairs. Documents have dynamic schema.
+
+ collection - table
+ document- one document represent the single row in RDBMS (key - column, value - data for that column)
+
+Need of MongoDB  
+
+application require big data
+scalability
+high availability
+complex data structures
+flexible schema design
+Developer friendly
+
+ Features of MongoDB
+
+Dynamic Schema
+Scalability
+Indexing
+Replication
+Sharding
+
+Key characteristics of Mongodb
+1. All information related to a document will be stored in single place.
+   to retrieve data , it is not required to perform join operations hence retrieval is fast.
+
+2. Documents are independent of each other and no schema. hence we can store unstructured data   like videos, audio files etc.
+
+3. we can perform operations like editing existing document, deleting document and inserting new 
+   documents very easily.
+
+4. Retrieval data is in the form of json which can be understandable by any programming lang
+  without any conversion.
+
+5. we can store very huge amount of data and hence scalability is more.
+
+
+Note  : Performance and flexibility are biggest advantage with mongodb.
+
+=============================================================================================
+
+
+Installation
+
+once we installed MongoDB , we will get MongoDB  Shell and mongodb server . 
+both application based on JavaScript . 
+
+mongodb server is responsible to store our data in database.
+
+mongodb shell is responsible to manage server.
+by using this shell we can perform all required CRUD operations.
+
+CRUD  = [Create, Retrieve, Update, Delete]
+
+
+
+
+
+============================================================================================
+db ===> display the current database
+
+show dbs===>  
+
+will display a list of databases that are currently available on your MongoDB server.  
+if you've created a new database but haven't added any data, it might not appear in the list.
+
+db.student.drop() collection
+db.seed.drop()	  
+
+use db_name  --> it will create a database if not available. if it is available then it switches
+                 you to that database.
+
+db.createCollection("student")
+
+show collections
+------------------------------------------
+Insert :
+
+db.student.insertOne(
+{rollno:1, 
+ "name" :"Swapnil",
+ marks: 87.23,
+ age: 19,
+  gender:"Male",
+ phone:123456789,
+ address:
+  { city:"Pune",pincode:111045 },
+ subjects: ["C","Java"]
+} 
+)
+
+
+db.student.insertMany([
+{................},
+
+ {..............},
+
+{.................}
+
+])
+
+-----------------------------------------------------------
+find :
+Syntax:
+db.collection_name.find({query},{projection})
+                           |        |
+                 in SQl  where     select        
+
+
+1. All documents with all fields
+
+db.student.find()===>select * from tablename;
+
+2. All documents with specified fields
+  
+  db.student.find({},{name:1,marks:1}) ==>select col1,col2 from tablename;
+  db.student.find({},{_id:0,name:1,marks:1})  //Exclude _id if not needed
+  db.student.find({},{_id:0,name:1,marks:1,"address.city":1})   //Access nested fields (like city inside address)
+
+3. Reteriving data with specific conditions 
+   
+  1. display student details who's name is 'Mayuri'?
+   db.student.find({name:'Mayuri'}) ==>select * from students where name='Mayuri'
+
+  2. find student with roll no 2 and display only name,subjects
+   db.student.find({rollno:2},{name:1,subjects:1}) 
+
+
+
+
+multiple filter conditions we can provide with relational operators  ::
+
+Syntax:
+db.collection_name.find({field:{operator :comparision value}},{projection})
+                                       |                             |
+                 in SQl            where                          select        
+  
+$lt = less than,
+$lte = less than equal to,
+$gt = greater than, 
+$gte = greater than equal to, 
+$ne =  not equal to, 
+$eq =equal to
+
+
+
+  3. find students who scored below 60
+     db.student.find({marks:{$lt:60}},{name:1,marks:1})
+
+  4. find students whos subject is java, c
+      db.student.find({ subjects: { $in: ["Java", "C"] } })
+
+
+db.student.find({"address.city":{$ne:'Pune'}},{name:1,"address.city":1})
+
+
+
+$in = equal to any ,$nin =not equal to any 
+
+  5. Find students taking either "C" or "Python" as a subject:   
+ db.student.find( {
+subjects:
+{
+  $in:["C","Python"]
+}
+  },{name:1,subjects:1})
+
+Syntax:
+db.collection_name.find({query},{projection},{option})
+                           |        |
+                 in SQl  where     select     
+---------------------------------------------------
+If we have multiple conditions to check : 
+
+$and  &  $or operator
+
+db.collection_name.find(
+{
+  logicalOperator : [
+    { <condition1> },
+    { <condition2> },
+    ...
+  ]
+},{Projection} )
+-----------------------
+only for $and operator::
+db.collection_name.find(
+{
+  <condition1> ,
+     <condition2>
+}, 
+{Projection}
+)   
+
+
+-----------Example-------
+$and : default
+
+find the student whos age is 19 and marks greater than 80.
+ 
+db.students.find(
+    {
+       age:19,marks:{$gt:80}
+    },
+    {
+      _id:0,name:1,age:1,marks:1
+    }
+  )
+
+
+db.students.find(
+ {$or:[
+    
+       {age:19},{marks:{$gt:80}}] 
+},
+    {
+      _id:0,name:1,age:1,marks:1
+    }
+  )
+
+
+
+db.students.find({
+  $and: [
+    { age: 19 } ,
+    { marks :{$gt:80}}
+  ]
+},
+{
+      _id:0,name:1,age:1,marks:1
+    })
+
+---------------------------------------------
+db.student.find({
+  $or: [
+    { gender: "Male" } ,
+    { marks :{$gt:80}}
+  ]
+},{
+      _id:0,name:1,gender:1,marks:1
+    })
+
+
+db.students.find({
+  subjects: { $not: { $eq: "Java" } }
+})
+
+----------------------------------------------------------------------
+
+
+Find students who have marks between 80 and 90 and live in either 
+Pune or Mumbai.
+
+-- run after nested document
+
+db.students.find({
+  $and: [
+    { marks: { $gte: 80, $lte: 90 } },
+    { $or: [
+      { "address.city": "Pune" },
+      { "address.city": "Mumbai" }
+    ]}
+  ]
+})
+
+db.students.find({
+  $and: [
+    { marks: { $gte: 80, $lte: 90 } },
+    { $or: [
+      { city: "Pune" },
+      { city: "Mumbai" }
+    ]}
+  ]
+})
+
+Some another methods 
+
+sort :
+
+order the documents in the result set
+Used to order the documents in ascending (1) or descending (-1) order based on a field.
+
+
+Syntax: db.collection.find(query).sort({ field1: order1, field2: order2, ... })
+
+field: The field by which to sort.
+order: 1 for ascending order and -1 for descending order.
+
+Order Value	Meaning
+ 1		Ascending (A-Z, 0-9)
+-1		Descending (Z-A, 9-0)
+
+ db.students.find({RollNo:{$gte:10}}).sort({rollNo:1})
+
+db.student.find({"gender":"Male"}).sort({"RollNo":-1})
+
+count:
+
+count method returns the number of documents that match a query
+
+Syntax: db.collection.count(query)  OR  db.collection.find(query).count()
+query: The selection criteria.
+
+
+// Count total number of students
+db.student.count()
+
+// Count students older than 18
+db.student.count({ age: { $gt: 18 } })
+
+// Count female students
+db.student.count({ gender: "Female" })
+
+
+limit :
+
+The limit method restricts the number of documents returned by the query
+
+Syntax: db.collection.find(query).limit(number)
+number: The maximum number of documents to return.
+
+// Show only first 5 students
+db.student.find().limit(5)
+
+// Show top 3 students (sorted by marks descending)
+db.student.find().sort({ marks: -1 }).limit(3)
+
+
+skip:
+
+The skip method skips over a specified number of documents in the result set.
+
+Syntax: db.collection.find(query).skip(number)
+number: The number of documents to skip.
+
+
+// Skip first 5 students
+db.student.find().skip(5)
+
+// Skip first 2, then show next 3 students
+db.student.find().skip(2).limit(3)
+
+
+---------------------------------------------------------------------------
+
+Update:  updateOne() , updateMany()
+
+db.collection.updateOne(
+  <filter>, 
+  <update> --->$set
+)
+
+			where		
+db.student.updateOne( { name:'Swapnil'},{$set :{ age:20}})
+db.student.updateOne( { "address.city":'Pune'},{$set :{ marks:80}})
+
+
+nested document:
+db.student.updateOne( { name:"Sagar"}, { $set:{"address.city":'Nagpur'}})
+
+db.student.updateMany({marks:{$lt:70}},{$set:{marks:71}})
+
+db.student.updateMany({marks:{$lt:79}},{$set:{subjects: ["Python"]}})
+
+db.student.updateOne({name:'Swapnil'},{$push:{subjects:"Java"}})
+
+ db.student.updateOne({rollno:1},{$pop:{subjects:-1}})
+
+db.student.updateOne({rollno:1},{$pop:{subjects:1}})
+
+
+db.student.updateOne({name:'Swapnil'},{$unset:{"phone":0}})
+
+db.student.updateOne({name:'Sagar'},{$set:{subjects:"database",phone:123456789}})
+
+
+
+db.student.updateOne(
+   { name:'Swapnil' },
+   { $pull: { subjects: "Java" } }
+)
+=====================================================================================
+Some other operator we can use it for array:
+
+1. $all: Matches arrays that contain all elements specified in the query.
+
+{ field: { $all: [value1, value2, ...] } }
+
+EX:: db.student.find({subjects:{$all:['C','Java']}},{name:1,_id:0,subjects:1})
+
+2. $in: Matches any of the values specified in an array.
+
+ { field: { $in: [value1, value2, ...] } }
+
+3. $nin: Matches none of the values specified in an array.
+   { field: { $nin: [value1, value2, ...] } }
+
+update operator
+
+4. $addToSet: Adds elements to an array only if they do not already exist in 
+    the set.
+   
+    { $addToSet: { field: value } }
+
+
+5. $push: Adds an element to an array.
+  { $push: { field: value } }
+
+
+6.  $each: Used with $push to add multiple items to an array.
+    { $push: { field: { $each: [value1, value2, ...] } } }
+
+7.  $pull: Removes all array elements that match a specified condition.
+
+    { $pull: { field: { <condition> } } }
+
+8. $pullAll: Removes all instances of the specified values from an existing array.
+
+   { $pullAll: { field: [value1, value2, ...] } }
+
+9. $pop: Removes the first or last element of an array.
+
+   { $pop: { field: -1 } }  // Removes the first element
+   { $pop: { field: 1 } }   // Removes the last element
+
+
+======================================================================================
+replaceOne
+
+* The replaceOne method is used to replace a single document that matches the specified filter criteria with a new document.
+* only replaces a single document even if multiple documents match the filter criteria.
+
+db.student.replaceOne({name:"Pranav"},{ firstname:"Rahul", lastname:"Sharma",marks:88})
+
+
+delete
+
+db.student.deleteOne({marks:{$lt:60})
+
+
+deleteMany
+
+db.student.deleteMany({marks:{$lt:60}})
+
+
+db.student.find([{name:'Mayuri'},{marks:{$lt:70}}])
+===============================================================
+
+Aggregation
+
+the aggregation framework is a powerful tool for performing data processing and analysis. It allows you to perform a series of transformations on your data.
+
+An aggregation pipeline consists of a series of stages, each represented by a document. The stages are applied in the order they appear in the pipeline.
+
+db.collection.aggregate([
+    { <stage1>: { <stage-specifications> } },
+    { <stage2>: { <stage-specifications> } },
+    ...
+])
+
+$match : 
+Filters the documents to pass only the documents that match the specified 
+  condition(s) to the next pipeline stage.
+
+{ $match: { field: value } }
+
+$group :
+The $group stage separates documents into groups according to a "group key".
+  The output is one document for each unique group key.
+
+{ 
+    $group: {
+        _id: "$field",  // Group by this field
+        total: { $sum: 1 }  // Example: count the number of documents
+    }
+}
+
+$project : 
+Passes along the documents with the requested fields to the next stage in 
+ the pipeline. The specified fields can be existing fields from the input 
+  documents or newly computed fields.
+
+{ 
+    $project: { 
+        field1: 1,   // Include field1
+        field2: 0    // Exclude field2
+    } 
+}
+
+
+$skip :
+Skips over the specified number of documents that pass into the stage and 
+passes the remaining documents to the next stage in the pipeline.
+
+{ $skip: 10 }
+
+$limit :
+Limits the number of documents passed to the next stage in the pipeline.
+
+{ $limit: 5 }
+
+$unwind :
+Deconstructs an array field from the input documents to output a document 
+for each element. Each output document is the input document with the value
+ of the array field replaced by the element.
+
+{ $unwind: "$arrayField" }
+
+$sort
+Sorts all input documents and returns them to the pipeline in sorted order.
+
+{ $sort: { field: 1 } }  // 1 for ascending, -1 for descending
+
+select city,max(marks)
+from student
+group by city;
+
+db.student.aggregate([
+  {
+    $group: {
+      _id: "$address.city",
+      maxMarks: { $max: "$marks" }
+    }
+  }])
+
+--based school-db and students collection
+
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$city",
+      maxMarks: { $max: "$marks" }
+    }
+  }])
+
+
+db.student.aggregate([
+  {
+    $group: {
+      _id: "$address.city",
+      maxMarks: { $max: "$marks" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      city: "$_id",
+      maxMarks: 1
+    }
+  }
+])
+
+
+ Find Students with age greater than 20 and calculate sum , 
+ average of marks for each city and display only city and marks.
+
+select avg(marks),sum(marks),city
+from students
+where age>20
+group by city
+order by 1;
+
+
+
+
+
+db.student.aggregate([
+{
+  $match:{ age:{$gt :20}}
+},
+{
+  $group:{_id:"$address.city" , averageMarks:{ $avg:"$marks"}, sumofMarks:{$sum:"$marks"}}
+},
+{
+  $project:{_id:0, city:"$_id",averageMarks:1,sumofMarks:1}
+},
+{
+ $sort:{ averageMarks:-1}
+}
+])
+
+
+
+
+db.student.aggregate([
+{
+  $match:{ age:{$gte :20}}
+},
+{
+  $group:{_id:"$address.city" , averageMarks:{ $avg:"$marks"}}
+},
+{
+  $project:{_id:0, city:"$_id",averageMarks:1}
+}
+])
+
+
+
+
+Write an aggregation query to unwind the subjects array and then group by each 
+subject to count the number of students studying each subject.
+
+
+
+
+
+
+db.students.aggregate([
+  { $unwind: "$subjects" }])
+
+
+db.student.aggregate([
+  { $unwind: "$subjects" },
+  { $group: { _id: "$subjects", studentCount: { $sum: 1 } } },
+  { $project: { _id: 0, subject: "$_id", studentCount: 1 } },
+  { $sort: { studentCount: -1 } }
+])
+
+
+
+
+
+===========================================================================
+
+
+db.collection.estimatedDocumentCount()
+
+Returns the count of all documents in a collection or view.
+
+
+
+db.collection.countDocuments(query)
+
+Returns an integer for the number of documents that match the query of the collection or view.
+
+
+db.collection.distinct(field)
+
+Finds the distinct values for a specified field across a single collection or view and returns the results in an array.
+
+
+========================================================
+
+mapReduce uses two JavaScript functions:
+
+map: Processes each document and emits key-value pairs.
+
+reduce: Merges all emitted values for the same key.
+
+
+var mapfun=function(){emit(this.subjects,this.marks)}
+
+ var reducefun=function(key,value){return Array.sum(value)}
+
+db.student.mapReduce(mapfun,reducefun,{'out':'result1'})
+
+{ result: 'result1', ok: 1 }
+
+ db.result1.find()
+[
+  { _id: 'history', value: 132 },
+  { _id: 'science', value: 70 },
+  { _id: 'math', value: 192 }
+]
+
+----------------------------------------------
+
+db.stud.mapReduce(function(){emit(this.subject,this.marks)},
+function(key,val){return Array.avg(val)},
+{query:{age:{$gt:16}},out:'result2'})
+
+{ result: 'result2', ok: 1 }
+
+seed> db.result2.find()
+
+[ { _id: 'math', value: 59 }, { _id: 'science', value: 70 } ]
+
+
+	==============================================
+=> Find average marks per city and store results in a new collection 	avgMarksByCity
+
+db.students.mapReduce(
+  function () {
+    emit(this.city, { totalMarks: this.marks, count: 1 });
+  },
+  function (key, values) {
+    var result = { totalMarks: 0, count: 0 };
+    values.forEach(function (v) {
+      result.totalMarks += v.totalMarks;
+      result.count += v.count;
+    });
+    return result;
+  },
+  {
+    out: "avgMarksByCity",
+    finalize: function (key, value) {
+      value.avgMarks = value.totalMarks / value.count;
+      return value;
+    }
+  }
+);
+
+
+db.avgMarksByCity.find().pretty();
+
+
+
+
+
+
+
+
+
+db.students.insertMany([
+{
+  empid:100,
+  name:"King",
+  Address:{
+		city:"Pune",
+		pincode: 411038
+	     },
+  mail:"King@gmail.com",
+  Subjects:["C","Core Java","Python"]
+},
+{
+ empid:101,
+  name:"Sachin",
+  Address:{
+		city:"Pune",
+		pincode: 411038
+	     },
+  mail:"Sachin@gmail.com",
+  Subjects:["C","Core Java","SQL","RWD"],
+  JobID: "Developer"
+}
+])
