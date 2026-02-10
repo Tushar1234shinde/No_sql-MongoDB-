@@ -1,0 +1,154 @@
+
+MONGODB AGGREGATION vs ORACLE SQL COMPARISON
+=========================================
+
+1. BASIC CONCEPT
+----------------
+MongoDB:
+- Document-based (JSON/BSON)
+- Uses aggregation pipeline
+- Schema flexible
+
+Oracle:
+- Table-based (rows & columns)
+- Uses SQL queries
+- Schema strict
+
+--------------------------------------------------
+
+2. SELECT vs $project
+---------------------
+MongoDB:
+$project -> selects required fields
+
+Oracle:
+SELECT column1, column2 FROM table;
+
+--------------------------------------------------
+
+3. WHERE vs $match
+------------------
+MongoDB:
+$match -> filters documents
+
+Oracle:
+WHERE clause filters rows
+
+--------------------------------------------------
+
+4. GROUP BY vs $group
+---------------------
+MongoDB:
+$group -> groups documents
+
+Oracle:
+GROUP BY clause
+
+--------------------------------------------------
+
+5. AGGREGATE FUNCTIONS
+---------------------
+MongoDB          Oracle
+$sum        ->   SUM()
+$avg        ->   AVG()
+$min        ->   MIN()
+$max        ->   MAX()
+$count      ->   COUNT()
+
+--------------------------------------------------
+
+6. ORDER BY vs $sort
+--------------------
+MongoDB:
+$sort -> sorting documents
+
+Oracle:
+ORDER BY clause
+
+--------------------------------------------------
+
+7. LIMIT / OFFSET
+-----------------
+MongoDB:
+$limit, $skip
+
+Oracle:
+FETCH FIRST, OFFSET
+
+--------------------------------------------------
+
+8. HAVING vs $match (after $group)
+----------------------------------
+MongoDB:
+$match after $group
+
+Oracle:
+HAVING clause
+
+--------------------------------------------------
+
+9. CASE WHEN vs $cond / $switch
+--------------------------------
+MongoDB:
+$cond, $switch
+
+Oracle:
+CASE WHEN expression
+
+--------------------------------------------------
+
+10. ARRAY vs NORMALIZED TABLE
+-----------------------------
+MongoDB:
+Arrays inside documents
+
+Oracle:
+Separate tables with foreign keys
+
+--------------------------------------------------
+
+11. UNWIND vs JOIN
+------------------
+MongoDB:
+$unwind expands array
+
+Oracle:
+JOIN between tables
+
+--------------------------------------------------
+
+12. DISTINCT
+------------
+MongoDB:
+$group with _id
+
+Oracle:
+SELECT DISTINCT
+
+--------------------------------------------------
+
+13. STRING FUNCTIONS
+-------------------
+MongoDB          Oracle
+$toUpper    ->   UPPER()
+$toLower    ->   LOWER()
+$strLenCP  ->   LENGTH()
+$substr    ->   SUBSTR()
+
+--------------------------------------------------
+
+EXECUTION FLOW
+--------------
+MongoDB:
+$match -> $project -> $group -> $sort
+
+Oracle:
+FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY
+
+--------------------------------------------------
+
+INTERVIEW SUMMARY
+-----------------
+MongoDB Aggregation uses pipeline-based processing,
+while Oracle SQL uses relational set-based querying.
+Both achieve similar results with different approaches.
